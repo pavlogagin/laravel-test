@@ -2,17 +2,20 @@
 
 @section('content')
     <p>Make your changes here ...</p>
-    <p>
-        <img src="{{ $gravatar }}" title="User Avatar" />Current user ID: {{ $user_id }}
-    </p>
-    <p>
-        <ul>
+    <table class="table table-condensed">
         @foreach($select as $user)
-            <li><img src="{{ $user->avatar }}" title="{{ $user->name }}" /></li>
-            <li>{{ $user->name }}</li>
-            <li>{{ $user->email }}</li>
-            <li>{{ $user->password }}</li>
+            <tbody>
+                <tr>
+                    <td rowspan="3" class="text-center"><img class="img-thumbnail" src="{{ $user->avatar }}" title="{{ $user->name }}" /></td>
+                    <td>{{ $user->name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ $user->email }}</td>
+                </tr>
+                <tr>
+                    <td>{{ $user->password }}</td>
+                </tr>
+            </tbody>
         @endforeach
-        </ul>
-    </p>
+    </table>
 @endsection

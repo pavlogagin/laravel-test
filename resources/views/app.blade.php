@@ -34,6 +34,8 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}">Home</a></li>
+                    <li><a href="{{ url('/') }}">About</a></li>
+                    <li><a href="{{ url('/') }}">Help</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -41,6 +43,7 @@
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
+                        <li><span style="line-height: 50px"><img class="img-circle" src="{{ $gravatar }}" title="User Avatar" width="40" height="40" /></span></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
