@@ -3,6 +3,7 @@
 use App\PermExp;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Comparator\ArrayComparatorTest;
 
 class HomeController extends Controller {
 
@@ -34,31 +35,36 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-        /*$id = 7;
-
-        $perm_exps = PermExp::findOrFail($id);
-
-        return $perm_exps;*/
+        $body_title = "Brief summary";
 
         $perm_exps = PermExp::all();
 
 		return view('home')->with([
+            'body_title' => $body_title,
             'perm_exps' => $perm_exps
         ]);
 	}
 
     public function account()
     {
+        $body_title = "Account manager";
+
         if (\Auth::check())
         {
             $user_id = \Auth::user()->id;
 
-            $results = DB::select('SELECT * FROM users WHERE id = ?', [$user_id]);
+            $avatar = \Auth::user()->gravatar;
+
+            $select = DB::select('SELECT * FROM users WHERE id = ?', [$user_id]);
+
+            $select[0] = (object) array_merge((array)$select[0], array('avatar' => $avatar));
         }
 
         return view('account')->with([
+            'body_title' => $body_title,
             'user_id' => $user_id,
-            'results' => $results
+            'gravatar' => $avatar,
+            'select' => $select
         ]);
     }
 
