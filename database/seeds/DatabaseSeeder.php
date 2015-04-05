@@ -13,8 +13,22 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		Model::unguard();
+		
+		$this->call('UserTableSeeder');
+		
+		$this->command->info('User table seeded!');
+	}
 
-		// $this->call('UserTableSeeder');
+}
+
+class UserTableSeeder extends Seeder {
+
+	public function run()
+	{
+		User::create([
+			'name' => 'Pavlo Gagin',
+			'email' => 'p.m.hahin@hotmail.com'
+		]);
 	}
 
 }
