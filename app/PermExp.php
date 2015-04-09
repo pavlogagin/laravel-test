@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class PermExp extends Model {
+class PermExp extends Model
+{
 
-	protected $fillable = [
+    protected $fillable = [
         'title',
         'amount',
         'availability'

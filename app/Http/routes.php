@@ -18,6 +18,6 @@ Route::get('home', 'HomeController@index');
 Route::get('account', 'HomeController@account');
 
 Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
 ]);

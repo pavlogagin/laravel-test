@@ -1,4 +1,8 @@
-@extends('app')
+@extends('layouts.default')
+
+@section('page_title', 'Account summary')
+
+@section('body_title', 'Brief account summary')
 
 @section('content')
     <p>Here will be brief summary of:</p>
@@ -18,4 +22,4 @@
         @endforeach
         </tbody>
     </table>
-@endsection
+@stop

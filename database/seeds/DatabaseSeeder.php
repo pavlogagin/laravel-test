@@ -3,32 +3,34 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class DatabaseSeeder extends Seeder {
+class DatabaseSeeder extends Seeder
+{
 
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
-	public function run()
-	{
-		Model::unguard();
-		
-		$this->call('UserTableSeeder');
-		
-		$this->command->info('User table seeded!');
-	}
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        Model::unguard();
+
+        $this->call('UserTableSeeder');
+
+        $this->command->info('User table seeded!');
+    }
 
 }
 
-class UserTableSeeder extends Seeder {
+class UserTableSeeder extends Seeder
+{
 
-	public function run()
-	{
-		User::create([
-			'name' => 'Pavlo Gagin',
-			'email' => 'p.m.hahin@hotmail.com'
-		]);
-	}
+    public function run()
+    {
+        User::create([
+            'name' => 'Pavlo Gagin',
+            'email' => 'p.m.hahin@hotmail.com'
+        ]);
+    }
 
 }
