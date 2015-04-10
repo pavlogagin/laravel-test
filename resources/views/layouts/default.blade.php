@@ -19,7 +19,7 @@
     <![endif]-->
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -36,22 +36,26 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('home') }}">Home</a></li>
                 <li><a href="{{ url('about') }}">About</a></li>
+                <li><a href="{{ url('contact') }}">Contact</a></li>
                 <li><a href="{{ url('help') }}">Help</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::guest())
-                    <li><a href="{{ url('/auth/login') }}">Login</a></li>
+                    <li><a href="{{ url('/auth/login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     <li><a href="{{ url('/auth/register') }}">Register</a></li>
                 @else
                     <li><span style="line-height: 50px"><img class="img-circle" src="{{ Auth::user()->gravatar }}"
-                                                             title="User Avatar" width="40" height="40"/></span></li>
+                                                             title="{{ Auth::user()->name }}" width="40"
+                                                             height="40"/></span></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/account') }}">Manage account</a></li>
-                            <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                            <li><a href="{{ url('/account') }}"><span class="glyphicon glyphicon-user"></span> Manage
+                                    account</a></li>
+                            <li><a href="{{ url('/auth/logout') }}"><span class="glyphicon glyphicon-log-out"></span>
+                                    Logout</a></li>
                         </ul>
                     </li>
                 @endif
@@ -61,18 +65,22 @@
 </nav>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">@yield('body_title')</div>
+    <div class="page-header"><h3>@yield('body_title')</h3></div>
 
-                <div class="panel-body">
-                    @yield('content')
-                </div>
-            </div>
-        </div>
-    </div>
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Page</a></li>
+        <li><a href="#">Section</a></li>
+    </ol>
+
+    <div class="jumbotron">@yield('content')</div>
 </div>
+
+<footer class="footer panel-footer navbar-fixed-bottom">
+    <div class="container">
+        <p class="text-muted">@yield('footer') @ Pavlo Gagin</p>
+    </div>
+</footer>
 
 <!-- Scripts -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

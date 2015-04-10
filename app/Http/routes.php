@@ -17,6 +17,18 @@ Route::get('home', 'HomeController@index');
 
 Route::get('account', 'HomeController@account');
 
+Route::get('about', function() {
+    return view('about');
+});
+
+Route::get('contact', function() {
+    return view('contact');
+});
+
+Route::get('help', function() {
+    return view('help');
+});
+
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',

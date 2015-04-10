@@ -1,4 +1,6 @@
+.env
+.bowerrc
+bower.json
 /.idea
 /vendor
 /node_modules
-.env
