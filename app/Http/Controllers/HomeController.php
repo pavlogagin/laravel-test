@@ -3,7 +3,12 @@
 use App\PermExp;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\Comparator\ArrayComparatorTest;
+use Symfony\Component\HttpFoundation\Request;
 
 class HomeController extends Controller
 {
@@ -60,6 +65,53 @@ class HomeController extends Controller
             'gravatar' => $avatar,
             'select' => $select
         ]);
+    }
+
+    /**
+     * Obtaining data from AJAX request via POST method
+     *
+     * @return string
+     */
+    public function post_action()
+    {
+        if (Session::token() !== Input::get('_token')) {
+            return 'bad token:<br />' . Session::token() . '<br />' . Input::get('_token');
+        }
+
+        // Setup the validator
+        $rules = array('title' => 'required', 'amount' => 'required');
+        $validator = Validator::make(Input::all(), $rules);
+
+        // Validate the input and return correct response
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
+        $perm_exp = new PermExp;
+
+        $perm_exp->title = Input::get('title');
+        $perm_exp->amount = Input::get('amount');
+
+        $perm_exp->save();
+
+        return Response::json(array(
+            'success' => true,
+            'title' => Input::get('title'),
+            'amount' => Input::get('amount')
+        ), 200);
+    }
+
+    /**
+     * Method for TESTING ...
+     * @param $num or any alse
+     * @return string
+     */
+    public function test($var)
+    {
+        return number_format($var, 2, ',', ' ');
     }
 
 }

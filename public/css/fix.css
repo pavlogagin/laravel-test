@@ -1,0 +1,24 @@
+body {
+    padding-bottom: 70px !important;
+}
+
+*:active,
+*:focus,
+a:active,
+a:focus,
+img,
+button {
+    outline: none !important;
+    -moz-outline: 3px solid #fff !important;
+    /*border: none;*/
+}
+
+.nopadding-hor {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.nopadding-ver {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
