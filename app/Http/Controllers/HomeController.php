@@ -50,7 +50,8 @@ class HomeController extends Controller
 
     public function account()
     {
-        if (\Auth::check()) {
+        if (\Auth::check())
+        {
             $user_id = \Auth::user()->id;
 
             $avatar = \Auth::user()->gravatar;
@@ -74,7 +75,8 @@ class HomeController extends Controller
      */
     public function post_action()
     {
-        if (Session::token() !== Input::get('_token')) {
+        if (Session::token() !== Input::get('_token'))
+        {
             return 'bad token:<br />' . Session::token() . '<br />' . Input::get('_token');
         }
 
@@ -83,7 +85,25 @@ class HomeController extends Controller
         $validator = Validator::make(Input::all(), $rules);
 
         // Validate the input and return correct response
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
+
+            /*$html = '<div class="alert alert-danger">';
+            $html .= '<strong>Whoops!</strong> There were some problems with your input.<br><br>';
+            $html .= '<ul>';
+
+            foreach ($validator->getMessageBag()->toArray() as $error)
+            {
+                $html .= '<li>' . $error . '</li>';
+            }
+
+            $html .= '</ul>';
+            $html .= '</div>';
+
+            return Response::json(array('html' => $html));*/
+
+            //return $validator->errors()->all();
+
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
@@ -106,7 +126,7 @@ class HomeController extends Controller
 
     /**
      * Method for TESTING ...
-     * @param $num or any alse
+     * @param num or any other
      * @return string
      */
     public function test($var)

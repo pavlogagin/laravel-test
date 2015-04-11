@@ -22,15 +22,18 @@ $('button#add_perm_exp').on('click', function (e) {
         success: function (data) {
             add_perm_exps(data.title, data.amount, data.success)
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status == 500) {
-                //alert('Internal error: ' + jqXHR.responseText);
-                var gen = window.open('', 'Internal error 500', 'height=400px,width=auto');
+        error: function (xhr) { // jqXHR, textStatus, errorThrown
+            /*if (jqXHR.status == 500) {
+                alert('Internal error 500: ' + jqXHR.responseText);
+                *//*var gen = window.open('', 'Internal error 500', 'height=400px,width=auto');
                 gen.document.write(jqXHR.responseText);
-                gen.document.close();
-            } else {
-                alert('Unexpected error: ' + errorThrown.responseText);
-            }
+                gen.document.close();*//*
+            } else if (jqXHR.status == 400) {
+                alert(textStatus + '! ' + errorThrown + ': ' + jqXHR.responseText);
+            }*/
+            alert(xhr.responseJSON.errors.title + '\n' + xhr.responseJSON.errors.amount);
+
+            return false;
         }
     }, 'json');
 
