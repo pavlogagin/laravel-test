@@ -34,9 +34,12 @@
         </tbody>
     </table>
     <table class="table">
+        <tr id="errors" style="display: none">
+            <td id="title_error">The title field is required.</td>
+            <td id="amount_error">The amount field is required.</td>
+        </tr>
         <tr>
             <form class="form-horizontal" role="form" method="post" action="{{ url('/home') }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                 <td class="nopadding-hor">
                     <div class="input-group">
                         <span class="input-group-addon glyphicon glyphicon-pencil"></span>

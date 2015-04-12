@@ -20,13 +20,13 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 Route::post('home', 'HomeController@post_action');
 Route::get('account', 'HomeController@account');
-Route::get('about', function() {
+Route::get('about', function () {
     return view('about');
 });
-Route::get('contact', function() {
+Route::get('contact', function () {
     return view('contact');
 });
-Route::get('help', function() {
+Route::get('help', function () {
     return view('help');
 });
 

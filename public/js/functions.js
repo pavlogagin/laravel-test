@@ -1,17 +1,17 @@
 /**
  * Global setUp of _token (doesn't work)
  */
-/*$.ajaxSetup({
+$.ajaxSetup({
     headers: {'X-CSRF-Token': $('meta[name=_token]').attr('content')}
-});*/
+});
 
 $('button#add_perm_exp').on('click', function (e) {
     e.preventDefault();
 
     var formData = {
         title: $('input[name=title]').val(),
-        amount: $('input[name=amount]').val(),
-        _token: $('input[name=_token]').val() // local setUp of _token
+        amount: $('input[name=amount]').val()
+        //_token: $('input[name=_token]').val() // local setUp of _token
     };
 
     $.ajax({
@@ -22,16 +22,17 @@ $('button#add_perm_exp').on('click', function (e) {
         success: function (data) {
             add_perm_exps(data.title, data.amount, data.success)
         },
-        error: function (xhr) { // jqXHR, textStatus, errorThrown
-            /*if (jqXHR.status == 500) {
-                alert('Internal error 500: ' + jqXHR.responseText);
-                *//*var gen = window.open('', 'Internal error 500', 'height=400px,width=auto');
+        error: function (jqXHR) { // jqXHR, textStatus, errorThrown
+            if (jqXHR.status == 500) {
+                var gen = window.open('', '_self', '');
                 gen.document.write(jqXHR.responseText);
-                gen.document.close();*//*
+                gen.document.close();
             } else if (jqXHR.status == 400) {
-                alert(textStatus + '! ' + errorThrown + ': ' + jqXHR.responseText);
-            }*/
-            alert(xhr.responseJSON.errors.title + '\n' + xhr.responseJSON.errors.amount);
+                /*alert(jqXHR.responseJSON.errors.title + '\n' + jqXHR.responseJSON.errors.amount);*/
+                show('#errors', jqXHR.responseJSON.errors.title, jqXHR.responseJSON.errors.amount);
+            } else {
+                alert('Internal error ' + jqXHR.status)
+            }
 
             return false;
         }
@@ -43,17 +44,33 @@ $('button#add_perm_exp').on('click', function (e) {
 function add_perm_exps(title, amount) {
     $('#append_perm_exps').append('' +
     '<tr class="perm_exps">' +
-    '<td>'+title+'</td>' +
-    '<td>'+amount+'</td>' +
+    '<td>' + title + '</td>' +
+    '<td>' + amount + '</td>' +
     '</tr>');
 
     $('.perm_exps').css('display', 'none')
         .fadeIn('slow')
         .removeAttr('class');
 
-    $('body').load(window.location.href,'body');
+    $('body').load(window.location.href, 'body');
 
-    //$('input[type=text]').val('');
+    return false;
+}
+
+function show(element, title, amount) {
+    if (title == null) {
+        $(element).fadeIn(1000);
+        $('#title_error').removeClass('alert alert-danger').addClass('alert alert-success').html('Ok');
+        $('#amount_error').removeClass('alert alert-success').addClass('alert alert-danger').html(amount);
+    } else if (amount == null) {
+        $(element).fadeIn(1000);
+        $('#amount_error').removeClass('alert alert-danger').addClass('alert alert-success').html('Ok');
+        $('#title_error').removeClass('alert alert-success').addClass('alert alert-danger').html(title);
+    } else {
+        $(element).fadeIn(1000);
+        $('#title_error').removeClass('alert alert-success').addClass('alert alert-danger').html(title);
+        $('#amount_error').removeClass('alert alert-success').addClass('alert alert-danger').html(amount);
+    }
 
     return false;
 }

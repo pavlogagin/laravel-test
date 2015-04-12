@@ -50,8 +50,7 @@ class HomeController extends Controller
 
     public function account()
     {
-        if (\Auth::check())
-        {
+        if (\Auth::check()) {
             $user_id = \Auth::user()->id;
 
             $avatar = \Auth::user()->gravatar;
@@ -75,53 +74,60 @@ class HomeController extends Controller
      */
     public function post_action()
     {
-        if (Session::token() !== Input::get('_token'))
-        {
-            return 'bad token:<br />' . Session::token() . '<br />' . Input::get('_token');
-        }
+        // Setup the validator rules
+        /*$rules = [
+            'title' => 'required|min:3|max:64',
+            'amount' => 'required|numeric'
+        ];*/
 
-        // Setup the validator
-        $rules = array('title' => 'required', 'amount' => 'required');
-        $validator = Validator::make(Input::all(), $rules);
+        /* create custom validation messages
+        $messages = array(
+            'required' => 'The :attribute is really really really important.', // !important :attribute
+            'same'  => 'The :others must match.' // !important :others
+        );*/
+
+        // Validate requested data from inputs form
+        // also it is possible to ModelName::$rules instead of $rules -- look at PermExp.php
+        $validator = Validator::make(Input::all(), PermExp::$rules); //.., $rules, $messages
 
         // Validate the input and return correct response
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
 
-            /*$html = '<div class="alert alert-danger">';
-            $html .= '<strong>Whoops!</strong> There were some problems with your input.<br><br>';
-            $html .= '<ul>';
-
-            foreach ($validator->getMessageBag()->toArray() as $error)
-            {
-                $html .= '<li>' . $error . '</li>';
-            }
-
-            $html .= '</ul>';
-            $html .= '</div>';
-
-            return Response::json(array('html' => $html));*/
-
-            //return $validator->errors()->all();
-
-            return Response::json(array(
+            return Response::json([
                 'success' => false,
-                'errors' => $validator->getMessageBag()->toArray()
-            ), 400); // 400 being the HTTP code for an invalid request.
+                'errors' => $validator->messages()
+            ], 400); // 400 being the HTTP code for an invalid request.
+
+            /* or without json
+            $messages = $validator->messages();
+
+            return Redirect::to('my_view')
+                ->withErrors($validator)
+                ->withInput(Input::except('password', 'password_confirm'));
+                // with old inputs value="{{ old('field') }}", except passwords
+            */
+
+            /* in the view!
+            in order to show each error separate
+            @if ($errors->has('field')) <p class="help-block">{{ $errors->first('field') }}</p> @endif*/
+
+        } else {
+
+            $perm_exp = new PermExp;
+            $perm_exp->title = Input::get('title');
+            $perm_exp->amount = Input::get('amount');
+
+            $perm_exp->save();
+
+            return Response::json([
+                'success' => true,
+                'title' => Input::get('title'),
+                'amount' => Input::get('amount')
+            ], 200);
+
+            // or without json
+            //return Redirect::to('my_view');
         }
-
-        $perm_exp = new PermExp;
-
-        $perm_exp->title = Input::get('title');
-        $perm_exp->amount = Input::get('amount');
-
-        $perm_exp->save();
-
-        return Response::json(array(
-            'success' => true,
-            'title' => Input::get('title'),
-            'amount' => Input::get('amount')
-        ), 200);
     }
 
     /**
