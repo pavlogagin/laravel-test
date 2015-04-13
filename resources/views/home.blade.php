@@ -32,7 +32,7 @@
             </tr>
         @empty
             <tr>
-                <td class="alert alert-info">There is nothing to show yet ...</td>
+                <td class="alert alert-info text-center" colspan="2">There is nothing to show yet ...</td>
             </tr>
         @endforelse
         </tbody>
@@ -43,14 +43,14 @@
             <td id="amount_error">{{-- render error messages here for perm_exps.amount --}}</td>
         </tr>
         <tr>
-            <form class="form-horizontal" role="form" method="post" action="{{ url('/home') }}">
-                <td class="nopadding-hor">
+            <form class="form-inline" role="form" method="post" action="{{ url('/home') }}">
+                <td class="nopadding-hor borderless">
                     <div class="input-group">
                         <span class="input-group-addon glyphicon glyphicon-pencil"></span>
                         <input class="form-control" type="text" name="title" placeholder="Expense's title, eg. MSP"/>
                     </div>
                 </td>
-                <td class="nopadding-hor">
+                <td class="nopadding-hor borderless">
                     <div class="input-group">
                         <span class="input-group-addon glyphicon glyphicon-usd"></span>
                         <input class="form-control" type="text" name="amount" placeholder="Amount, eg. 65.25"/>
