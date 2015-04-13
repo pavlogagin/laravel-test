@@ -1,6 +1,8 @@
 .env
 .bowerrc
 bower.json
+composer.phar
+composer.lock
 /.idea
 /vendor
 /node_modules
