@@ -35,8 +35,8 @@
     </table>
     <table class="table">
         <tr id="errors" style="display: none">
-            <td id="title_error">The title field is required.</td>
-            <td id="amount_error">The amount field is required.</td>
+            <td id="title_error">{{-- render error messages here for perm_exps.title --}}</td>
+            <td id="amount_error">{{-- render error messages here for perm_exps.amount --}}</td>
         </tr>
         <tr>
             <form class="form-horizontal" role="form" method="post" action="{{ url('/home') }}">
