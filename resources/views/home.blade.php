@@ -25,12 +25,16 @@
         </tr>
         </thead>
         <tbody id="append_perm_exps">
-        @foreach($perm_exps as $perm_exp)
+        @forelse($perm_exps as $perm_exp)
             <tr>
                 <td>{{ $perm_exp->title }}</td>
                 <td>{{ number_format($perm_exp->amount, 2, ',', ' ') }}</td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td class="alert alert-info">There is nothing to show yet ...</td>
+            </tr>
+        @endforelse
         </tbody>
     </table>
     <table class="table">
