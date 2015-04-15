@@ -16,19 +16,15 @@ Route::pattern('num', '\b\d+\.\d{2}'); // eg. 120.50
 
 Route::get('test/{var}', 'HomeController@test');
 
+Route::get('about', function () { return view('about'); });
+Route::get('contact', function () { return view('contact'); });
+Route::get('help', function () { return view('help'); });
+
 Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
-Route::post('home', 'HomeController@post_action');
-Route::get('account', 'HomeController@account');
-Route::get('about', function () {
-    return view('about');
-});
-Route::get('contact', function () {
-    return view('contact');
-});
-Route::get('help', function () {
-    return view('help');
-});
+Route::post('home', 'HomeController@store');
+Route::get('account', 'HomeController@show');
+
 
 Route::controllers([
     'auth' => 'Auth\AuthController',

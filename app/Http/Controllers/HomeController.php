@@ -5,10 +5,10 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use SebastianBergmann\Comparator\ArrayComparatorTest;
-use Symfony\Component\HttpFoundation\Request;
+use Request;
 
 class HomeController extends Controller
 {
@@ -48,7 +48,12 @@ class HomeController extends Controller
         ]);
     }
 
-    public function account()
+    /**
+     * Show the 'account page' for the 'user' with 'user()->id'
+     *
+     * @return $this
+     */
+    public function show()
     {
         if (\Auth::check()) {
             $user_id = \Auth::user()->id;
@@ -57,6 +62,7 @@ class HomeController extends Controller
 
             $select = DB::select('SELECT * FROM users WHERE id = ?', [$user_id]);
 
+            // merging select from db Array with gravatar in one Array
             $select[0] = (object)array_merge((array)$select[0], array('avatar' => $avatar));
         }
 
@@ -72,62 +78,68 @@ class HomeController extends Controller
      *
      * @return string
      */
-    public function post_action()
+    public function store()
     {
-        // Setup the validator rules
-        /*$rules = [
-            'title' => 'required|min:3|max:64',
-            'amount' => 'required|numeric'
-        ];*/
+        if (Request::ajax()) {
+            // Setup the validator rules
+            /*$rules = [
+                'title' => 'required|min:3|max:64',
+                'amount' => 'required|numeric'
+            ];*/
 
-        /* create custom validation messages
-        $messages = array(
-            'required' => 'The :attribute is really really really important.', // !important :attribute
-            'same'  => 'The :others must match.' // !important :others
-        );*/
+            /* create custom validation messages
+            $messages = array(
+                'required' => 'The :attribute is really really really important.', // !important :attribute
+                'same'  => 'The :others must match.' // !important :others
+            );*/
 
-        // Validate requested data from inputs form
-        // also it is possible to ModelName::$rules instead of $rules -- look at PermExp.php
-        $validator = Validator::make(Input::all(), PermExp::$rules); //.., $rules, $messages
+            // Validate requested data from inputs form
+            // also it is possible to ModelName::$rules instead of $rules -- look at PermExp.php
+            $validator = Validator::make(Input::all(), PermExp::$rules); //.., $rules, $messages
 
-        // Validate the input and return correct response
-        if ($validator->fails()) {
+            // Validate the input and return correct response
+            if ($validator->fails()) {
 
-            return Response::json([
-                'success' => false,
-                'errors' => $validator->messages()
-            ], 400); // 400 being the HTTP code for an invalid request.
+                return Response::json([
+                    'success' => false,
+                    'errors' => $validator->messages()
+                ], 400); // 400 being the HTTP code for an invalid request.
 
-            /* or without json
-            $messages = $validator->messages();
+                /* or without json
+                $messages = $validator->messages();
 
-            return Redirect::to('my_view')
-                ->withErrors($validator)
-                ->withInput(Input::except('password', 'password_confirm'));
-                // with old inputs value="{{ old('field') }}", except passwords
-            */
+                return Redirect::to('my_view')
+                    ->withErrors($validator)
+                    ->withInput(Input::except('password', 'password_confirm'));
+                    // with old inputs value="{{ old('field') }}", except passwords
+                */
 
-            /* in the view!
-            in order to show each error separate
-            @if ($errors->has('field')) <p class="help-block">{{ $errors->first('field') }}</p> @endif*/
+                /* in the view!
+                in order to show each error separate
+                @if ($errors->has('field')) <p class="help-block">{{ $errors->first('field') }}</p> @endif*/
 
-        } else {
+            } else {
 
-            $perm_exp = new PermExp;
-            $perm_exp->title = Input::get('title');
-            $perm_exp->amount = Input::get('amount');
+                /*$perm_exp = new PermExp;
+                $perm_exp->title = Input::get('title');
+                $perm_exp->amount = Input::get('amount');
 
-            $perm_exp->save();
+                $perm_exp->save();*/
 
-            return Response::json([
-                'success' => true,
-                'title' => Input::get('title'),
-                'amount' => Input::get('amount')
-            ], 200);
+                $input = Request::all();
 
-            // or without json
-            //return Redirect::to('my_view');
-        }
+                PermExp::create($input);
+
+                return Response::json([
+                    'success' => true,
+                    'title' => $input['title'],
+                    'amount' => $input['amount']
+                ], 200);
+
+                // or without json
+                //return Redirect::to('my_view');
+            }
+        } abort(404);
     }
 
     /**
@@ -137,6 +149,12 @@ class HomeController extends Controller
      */
     public function test($var)
     {
+        $user = User::findOrFail($var);
+
+        if (is_null($user)) {
+            abort(404);
+        }
+
         return number_format($var, 2, ',', ' ');
     }
 

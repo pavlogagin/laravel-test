@@ -43,7 +43,8 @@
             <td id="amount_error">{{-- render error messages here for perm_exps.amount --}}</td>
         </tr>
         <tr>
-            <form class="form-inline" role="form" method="post" action="{{ url('/home') }}">
+            {!! Form::open(['class' => 'form-inline']) !!}
+
                 <td class="nopadding-hor borderless">
                     <div class="input-group">
                         <span class="input-group-addon glyphicon glyphicon-pencil"></span>
@@ -59,7 +60,8 @@
                         </span>
                     </div>
                 </td>
-            </form>
+
+            {!! Form::close() !!}
         </tr>
     </table>
 @stop
